@@ -1,4 +1,4 @@
-- name: Configure a VM
+- name: Configure VM
   hosts: app
   become: true
 

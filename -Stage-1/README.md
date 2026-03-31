@@ -9,7 +9,7 @@
 
 ## Aplication:
 
-#### Based a Gitlab proyect. This utilization is only for purpose eduacational way, it was made by Zdenko Hraste.
+#### Modify and update a Gitlab proyect. This utilization is only for purpose eduacational way, inspired by:
 https://gitlab.com/zdenko.hraste/flask-pokedex
 
 ## Tools:

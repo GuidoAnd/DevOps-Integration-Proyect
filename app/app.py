@@ -1,46 +1,55 @@
 from flask import Flask, render_template, url_for, request, redirect
 import requests
-import os
-from flask_bootstrap import Bootstrap
-from flask_fontawesome import FontAwesome
-import json
 
 app = Flask(__name__)
-Bootstrap(app)
-fa = FontAwesome(app)
 
 @app.route('/')
-def index():
-	pokemon = [" ".join(i["name"].split("-")).title() for i in requests.get(f'https://pokeapi.co/api/v2/pokemon/?limit=-1').json()["results"]]
-	return render_template('index.html', pokemon=pokemon)
+def index():    
+    try:
+        response = requests.get('https://pokeapi.co/api/v2/pokemon/?limit=-1')
+        data = response.json()
+        pokemon = [" ".join(i["name"].split("-")).title() for i in data["results"]]
+        return render_template('index.html', pokemon=pokemon)
+    except:
+        return "Error conectando con la API de Pokémon", 500
 
 @app.route('/<pokemon>')
 def pokemon(pokemon):
-	try:
-		req = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}').json()
-		print(req["id"])
-		stats = req['stats']
-		types = req['types']
-		sprites = [req['sprites'][i] for i in req['sprites']]
-		name = " ".join(req['name'].split("-")).title()
-		weight = req['weight']
-		sprites[0], sprites[1], sprites[2], sprites[3], sprites[4], sprites[5], sprites[6], sprites[7] = sprites[4], sprites[0], sprites[5], sprites[1], sprites[6], sprites[2], sprites[7], sprites[3]
-		sprites = [i if i != None else "" for i in sprites]
-		return render_template('pokemon.html', stats=stats, types=types, sprites=sprites, name = name, weight = weight)
-	except:
-		return redirect(url_for('index'))
+    try:
+        res = requests.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}')
+        if res.status_code != 200:
+            return redirect(url_for('index'))
+        
+        req = res.json()
+        
+        stats = req['stats']
+        types = req['types']
+        name = " ".join(req['name'].split("-")).title()
+        weight = req['weight']
+                
+        s = req['sprites']
+        raw_sprites = [
+            s.get('front_default'), s.get('back_default'),
+            s.get('front_female'),  s.get('back_female'),
+            s.get('front_shiny'),    s.get('back_shiny'),
+            s.get('front_shiny_female'), s.get('back_shiny_female')
+        ]
+               
+        sprites = [i if i is not None else "" for i in raw_sprites]
+        
+        return render_template('pokemon.html', stats=stats, types=types, sprites=sprites, name=name, weight=weight)
+    except Exception as e:
+        print(f"Error: {e}")
+        return redirect(url_for('index'))
 
 @app.route('/get_pokemon', methods=['POST'])
 def get_pokemon():
-	try:
-		pokemon = request.form['pokemon']
-		pk = "-".join(pokemon.split(" ")).lower()
-		return redirect(url_for('pokemon', pokemon=pk))
-	except:
-		return redirect(url_for('index'))
+    pokemon = request.form.get('pokemon', '').strip()
+    if not pokemon:
+        return redirect(url_for('index'))
+    
+    pk = "-".join(pokemon.lower().split(" "))
+    return redirect(url_for('pokemon', pokemon=pk))
 
-#port = int(os.environ.get('PORT', 5000)) 
 if __name__ == '__main__':
-	#app.run(port=port, debug=True)
-	#app = 
-	app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)
