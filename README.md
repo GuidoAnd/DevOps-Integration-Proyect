@@ -20,4 +20,4 @@
 
 #
 
-##### Update: The Integration proyect will have constructed building on April month.
+##### Update: The Integration proyect will be building on April month.
