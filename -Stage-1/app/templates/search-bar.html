@@ -1,0 +1,11 @@
+<div class="search-nav">
+    <form action="{{ url_for('get_pokemon') }}" method="POST" class="d-flex">
+        <input type='text' name="pokemon" class="search-bar" required placeholder="pokemon" />
+        <button class="btn nav-btn ml-1" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+        <a class="btn nav-btn ml-1" href="{{ url_for('index') }}">
+            <i class="fas fa-home"></i>
+        </a>
+    </form>
+</div>
