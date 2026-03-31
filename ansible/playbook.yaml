@@ -1,0 +1,80 @@
+- name: Configure a VM
+  hosts: app
+  become: true
+
+  tasks:
+  - name: Update System packages
+    apt:
+       update_cache: yes
+  
+  - name: Install main dependencies
+    package:
+      name:
+        - python3
+        - python3-pip
+        - python3-venv
+        - git
+      state: present
+
+  - name: Make a workdir
+    file:
+      dest: /media/app
+      state: directory
+      mode: '0755'
+      owner: "{{ ansible_user }}"
+
+  - name: Copy App
+    copy:      
+      src: ../app/
+      dest: /media/app/
+      mode: '0644'
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      force: true
+
+  - name: Copy a required App dependencies 
+    copy:
+      src: ../requirements.txt
+      dest: /media/app/requirements.txt
+      mode: '0644'
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}" 
+  
+  - name: Make a python ENV
+    command: python3 -m venv /media/app/.venv
+    args:
+      creates: /media/app/.venv/bin/activate
+  
+  - name: Install app dependencies
+    pip:
+      requirements: /media/app/requirements.txt
+      virtualenv: /media/app/.venv
+  
+  - name: Launch app as a service
+    copy:
+      content: |
+        [Unit]
+        Description=PokeDex Calculator
+        After=network.target
+
+        [Service]
+        Type=simple
+        User={{ ansible_user }}
+        WorkingDirectory=/media/app
+        ExecStart=/media/app/.venv/bin/python3 /media/app/app.py
+        Restart=always
+        RestartSec=10
+
+        [Install]
+        WantedBy=multi-user.target
+      dest: /etc/systemd/system/pokedex-calculator-app.service
+    
+  - name: Reload Systemd
+    systemd:
+      daemon_reload: yes
+  
+  - name: Enabled service
+    systemd:
+      name: pokedex-calculator-app
+      enabled: yes
+      state: started
