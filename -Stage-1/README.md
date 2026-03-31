@@ -4,7 +4,7 @@
 
 #### The organization "GameSolutions" use a VMs to run theirs apps in production servers. Neverthless, It could bring some problems. This computers where the employee's coding, it doesn't always run the same way. The devs sometime use a poor excuse as "In my computer runs well". 
 #### Another problem is the scability, given that on the next week will be closing a client contract and them need more VMs for the main app and it's backend. 
-#### How to solve this?. A senior dev brings to try to solve this situation, inasmuch as don't have more on-premise resourses to put for testing thier apps, he search a IaC solution with a cost-efective and fast solution. He planteo make a cloud VM's with automatizate it's configuration. 
+#### How to solve this?. A senior dev brings to try to solve this situation, inasmuch as don't have more on-premise resourses to put for testing thier apps, he search a IaC solution with a cost-efective and fast solution. Thus, he make a cloud VM's with automatizate it's configuration. 
 
 
 ## Aplication:
