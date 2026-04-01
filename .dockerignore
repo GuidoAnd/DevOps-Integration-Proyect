@@ -1,0 +1,11 @@
+terraform/
+ansible/
+-Stage-1/
+-Stage-2/
+.venv/
+pem/
+*.pem
+.gitignore
+README.md
+*.tfvars
+*.lock.hcl
