@@ -1,3 +1,7 @@
 .venv/
 pem/
 *.PEM
+*.tfvars
+.terraform/
+.tfstate
+.terraform.lock.hcl

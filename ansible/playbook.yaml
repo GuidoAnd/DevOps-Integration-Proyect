@@ -63,7 +63,7 @@
         WorkingDirectory=/media/app
         ExecStart=/media/app/.venv/bin/python3 /media/app/app.py
         Restart=always
-        RestartSec=10
+        RestartSec=60
 
         [Install]
         WantedBy=multi-user.target

@@ -8,16 +8,16 @@
 
 ## General Content:
 
-* #### 1° Stage - Deploy a example app in a cloud VM.
+* #### 1° Stage - Deploy an example app in a cloud VM.
 
 * #### 2° Stage - Conterinerized APP
 
-* #### 3° Stage - Countinuos integration
+* #### 3° Stage - Countinuos integration && testing
 
-* #### 4° Stage - Solving a scale problem
+* #### 4° Stage - Apply a solution for scaling problem
 
 * #### 5° Stage - Automatizate && Continuos Deployment
 
 #
 
-##### Update: The Integration proyect will have constructed building on April month.
+##### Update: The Integration proyect will be building on April month.
