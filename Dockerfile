@@ -17,7 +17,7 @@ FROM python:3.14-slim AS runtime
 
 WORKDIR /media/app
 
-COPY --from=Builder /root/.local /root/.local
+COPY --from=builder /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
 
