@@ -67,7 +67,7 @@
 
         [Install]
         WantedBy=multi-user.target
-      dest: /etc/systemd/system/pokedex-calculator-app.service
+      dest: /etc/systemd/system/pokedex-stats-app.service
     
   - name: Reload Systemd
     systemd:
@@ -75,6 +75,6 @@
   
   - name: Enabled service
     systemd:
-      name: pokedex-calculator-app
+      name: pokedex-stats-app
       enabled: yes
       state: started

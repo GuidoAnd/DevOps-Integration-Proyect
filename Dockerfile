@@ -20,6 +20,7 @@ WORKDIR /media/app
 COPY --from=builder /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
+ENV FLASK_ENV=production
 
 COPY app/ /media/app
 

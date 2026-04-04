@@ -5,3 +5,5 @@ pem/
 .terraform/
 .tfstate
 .terraform.lock.hcl
+.pytest_cache
+__pycache__
