@@ -7,10 +7,10 @@
 
 #### Therefore, one memeber of the Operation team brings a containerized solution. These containers would spend less resourse that IaaS solution. In addition, once a time builted them will work in all enviroment the same way.
 
-#### Finally, GamesSolution needs automatizate its unitary and funtion tests. Above all, in the initial phase of the app. 
+#### Finally, GamesSolution needs automatizate its unitary and integration tests. Above all, in the initial phase of the app. 
 
 
 ## Tools/Services:
 
 * #### Docker engine containerized
-* #### Functional tests: Pytest
+* #### Automatized tests - Pytest

@@ -9,5 +9,8 @@ pem/
 README.md
 *.tfvars
 *.lock.hcl
-.pytest_cache
-__pycache__
+.pytest_cache/
+__pycache__/
+.git/
+env/
+tests/

@@ -2,6 +2,7 @@ import json
 import pytest
 from unittest.mock import patch
 
+## Integration tests 
 
 def test_index_route(client):
     resp = client.get("/")
@@ -20,7 +21,7 @@ def test_pokemon_detail_route(client):
     assert b"Charizard" in resp.data
 
 
-# TEST UNITARIOS
+## Unitary tests
 
 def test_get_pokemon_redirect(client):
     resp = client.post("/get_pokemon", data={"pokemon": "Pikachu"}, follow_redirects=False)
