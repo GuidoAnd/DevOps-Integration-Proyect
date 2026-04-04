@@ -9,6 +9,7 @@
 
 #### Finally, GamesSolution needs automatizate its unitary and integration tests. Above all, in the initial phase of the app. 
 
+#
 
 ## Tools/Services:
 
