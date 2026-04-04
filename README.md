@@ -3,16 +3,16 @@
 
 
 ## Synopsis:
-### This Proyect show how to solve some hypotetical infrastructure problems in a fiction organization. 
+### This Proyect show how to solve some infrastructure problems in a fiction organization. 
 
 
 ## General Content:
 
 * #### 1° Stage - Deploy an example app in a cloud VM.
 
-* #### 2° Stage - Conterinerized APP
+* #### 2° Stage - Conterinerized APP && Testing
 
-* #### 3° Stage - Countinuos integration && testing
+* #### 3° Stage - Countinuos integration 
 
 * #### 4° Stage - Apply a solution for scaling problem
 
