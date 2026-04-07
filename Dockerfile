@@ -23,6 +23,7 @@ ENV PATH=/root/.local/bin:$PATH
 ENV FLASK_ENV=production
 
 COPY app/ /media/app
+COPY tests/ tests/
 
 EXPOSE 6000
 
