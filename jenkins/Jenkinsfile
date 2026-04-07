@@ -45,11 +45,14 @@ pipeline {
 
         stage('Login to ECR && Push'){
             steps {
-                sh """
-                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                docker push ${FULL_IMAGE}
-                docker push ${ECR_URL}:latest
-                """           
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'Devops-PI', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                        docker push ${FULL_IMAGE}
+                        docker push ${ECR_URL}:latest
+                        """
+               }         
             }
         }
     }
