@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+
+    environment {
+            AWS_REGION = 'us-east-1'
+            IMAGE_TAG = "${BUILD_NUMBER}"
+            AWS_ACCOUNT_ID = '025889067332'
+            REPO_GH = 'https://github.com/GuidoAnd/DevOps-Integration-Proyect.git'           
+            BRANCH_TARGET_NAME = 'main'
+            ECR_URL = '025889067332.dkr.ecr.us-east-1.amazonaws.com/devops-pi/reginf'
+            FULL_IMAGE = "${ECR_URL}:${IMAGE_TAG}"            
+    }
+
+    stages {        
+        stage('Clean WS') {
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                git branch: "${BRANCH_TARGET_NAME}",
+                    url: "${REPO_GH}"
+            }
+        }
+
+        stage('Build Image for Test') {
+            steps {
+                sh "docker build . -t ${FULL_IMAGE}-test"                
+            }
+        }
+
+        stage('Tests'){
+            steps {
+                sh "docker run --rm ${FULL_IMAGE}-test pytest tests"
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                sh "docker build . -t ${FULL_IMAGE} -t ${ECR_URL}:latest"
+              }
+            }               
+
+        stage('Login to ECR'){
+            steps {
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                """           
+            }
+        }
+        
+        stage('Push Image') {
+            steps {
+                sh """                 
+                docker push ${FULL_IMAGE}
+                docker push ${ECR_URL}:latest
+                """
+             }
+        }
+    }
+} 

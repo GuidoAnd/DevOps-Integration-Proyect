@@ -2,6 +2,7 @@ terraform/
 ansible/
 -Stage-1/
 -Stage-2/
+-Stage-3/
 .venv/
 pem/
 *.pem
@@ -11,6 +12,3 @@ README.md
 *.lock.hcl
 .pytest_cache/
 __pycache__/
-.git/
-env/
-tests/
