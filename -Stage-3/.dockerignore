@@ -1,0 +1,14 @@
+terraform/
+ansible/
+-Stage-1/
+-Stage-2/
+-Stage-3/
+.venv/
+pem/
+*.pem
+.gitignore
+README.md
+*.tfvars
+*.lock.hcl
+.pytest_cache/
+__pycache__/
