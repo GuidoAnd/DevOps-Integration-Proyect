@@ -1,0 +1,28 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poke-app
+  namespace: poke-app
+# ReplicaSet
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: poke-app
+  # Pod template
+  template:
+    metadata:
+      labels:
+        app: poke-app
+    spec:
+      containers:
+        - name: poke-app
+          image: ---.dkr.ecr.us-east-1.amazonaws.com/---/---:latest
+          ports:
+            - containerPort: 8000
+          # env:
+          #   - name: ENV_TYPE
+          #     value: minikube
+      imagePullSecrets:
+        - name: pokecred

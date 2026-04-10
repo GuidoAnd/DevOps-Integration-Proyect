@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: poke-app-service
+  namespace: poke-app
+spec:
+  selector:
+    app: poke-app
+  ports:
+    - port: 8000
+      targetPort: 8000
