@@ -14,7 +14,7 @@
 
 * #### 3° Stage - Countinuos integration 
 
-* #### 4° Stage - Apply a solution for scaling problem
+* #### 4° Stage - Apply a solution for the scale problem
 
 * #### 5° Stage - Automatizate && Continuos Deployment
 
