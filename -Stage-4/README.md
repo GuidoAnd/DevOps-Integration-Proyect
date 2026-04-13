@@ -2,11 +2,11 @@
 
 ## Context:
 
-#### The continuous integration was well adopted into Development and operations teams, Gamesolutions has delighted with the resaults. Devs spend less time rivise and check errors and bugs. In adition, thanks to pipelines the operation team can help to seek errors easly. 
+#### The continuous integration has been widely adopted by the development and operations teams, Gamesolutions has been very pleased with. Devs now spend less time reviewing and checking for errors and bugs. In adition, thanks to the pipelines, the operation team can easly identify them. 
 
-#### The time saved by this modifications, it was inspired a OP teams to spend more time with new proyects. a PARTIR de esto, appear a needed to scale for confronting these develpments. Si bien, Containersization was logro a optimatization use of resources, the necesity to scale cada vez era mayor. Fhuremore, it don't have a centrilized way to control a multiples containers.
+#### The time saved thanks to these changes encouraged the operations teams to devote more time to new projects. From there, the need to scale up to handle these developments arose. While containerization made it possible to optimize resource usage, the need to scale up was growing. Furthermore, there was no centralized way to manage the multiple containers
 
-#### A nearly client comment them a great and confiable tool to supply a scale problem and make a centrilized control with a orchestator of containers. #
+#### A client recently recommended a great and reliable tool for addressing a scaling issue and implementing centralized control using a container orchestrator. 
 
 ## Tools/Services:
 
