@@ -4,6 +4,7 @@ ansible/
 -Stage-2/
 -Stage-3/
 -Stage-4/
+-Stage-5/
 .venv/
 pem/
 *.pem
