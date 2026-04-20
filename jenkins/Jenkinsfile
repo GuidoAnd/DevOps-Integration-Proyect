@@ -61,7 +61,7 @@ pipeline {
         }
         stage('Update Helm Values') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-app-test',
+                withCredentials([usernamePassword(credentialsId: 'github-j-app',
                                  passwordVariable: 'GIT_PASSWORD',
                                  usernameVariable: 'GIT_USERNAME')]) {
                     script {
@@ -72,9 +72,14 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' values.yaml"
-
                             sh """
+                               cd helm/poke-manifests/
+                               sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' values.yaml"
+                               cd ..
+                               cd ..
+                            """
+
+                            sh """                                
                                 git config user.email "jenkins@ordersgh17.com"
                                 git config user.name "Jenkins CI"
                                 git add values.yaml
