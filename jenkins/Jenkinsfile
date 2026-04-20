@@ -72,11 +72,8 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh """
-                               cd helm/poke-manifests/
-                               sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' values.yaml"
-                               cd ..
-                               cd ..
+                            sh """                               
+                               sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' helm/poke-manifests/values.yaml"                                                              
                             """
 
                             sh """                                
