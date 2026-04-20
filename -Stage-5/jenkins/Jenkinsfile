@@ -8,8 +8,11 @@ pipeline {
             REPO_GH = 'https://github.com/GuidoAnd/DevOps-Integration-Proyect.git'           
             BRANCH_TARGET_NAME = 'main'
             ECR_URL = '025889067332.dkr.ecr.us-east-1.amazonaws.com/devops-pi/reginf'
-            FULL_IMAGE = "${ECR_URL}:${IMAGE_TAG}"            
-    }
+            FULL_IMAGE = "${ECR_URL}:${IMAGE_TAG}"
+            HELM_REPO = 'https://github.com/GuidoAnd/DevOps-Integration-Proyect-helm.git'
+            GH_PUSH_URL_HELM = 'github.com/GuidoAnd/DevOps-Integration-Proyect-helm.git'
+            BRANCH_HELM = 'main'
+    }   
 
     stages {        
         stage('Clean WS') {
@@ -56,5 +59,36 @@ pipeline {
                }         
           //  }
         }
+        stage('Update Helm Values') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'github-app-test',
+                                 passwordVariable: 'GIT_PASSWORD',
+                                 usernameVariable: 'GIT_USERNAME')]) {
+                    script {
+
+                        sh """
+                            rm -rf helm-repo
+                            git clone ${HELM_REPO} helm-repo                            
+                        """
+                                           
+                        dir('helm-repo') {
+                            sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' values.yaml"
+
+                            sh """
+                                git config user.email "jenkins@ordersgh17.com"
+                                git config user.name "Jenkins CI"
+                                git add values.yaml
+                                git commit -m "Update image tag to ${IMAGE_TAG}"
+
+                                # Usamos las variables que jenkins genera automaticamente para la app
+                                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GH_PUSH_URL_HELM} ${BRANCH_HELM}
+                            """   
+                                }   
+                            }
+                        }
+
+                 }
+            }
+        
     }
- } 
+}               
