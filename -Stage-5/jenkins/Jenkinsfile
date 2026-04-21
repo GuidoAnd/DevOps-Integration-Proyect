@@ -84,7 +84,7 @@ pipeline {
                                 chmod +x ./yq
                             fi
                             
-                            IMAGE_TAG=${IMAGE_TAG} yq -i '.tag = env(IMAGE_TAG)' helm/poke-manifests/values.yaml"
+                            IMAGE_TAG=${IMAGE_TAG} yq -i '.tag = env(IMAGE_TAG)' helm/poke-manifests/values.yaml
                             """
                             sh """                                
                                 git config user.email "jenkins@ordersgh17.com"
