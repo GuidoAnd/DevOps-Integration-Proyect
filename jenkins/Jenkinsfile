@@ -78,7 +78,7 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh "echo 'Actualizando a tag: ${IMAGE_TAG}'"
+                            sh "echo 'Updating tag: ${IMAGE_TAG}'"
                             sh "sed -i \"s/\\(tag: \\).*/\\1${IMAGE_TAG}/g\" helm/poke-manifests/values.yaml"
                             sh "grep 'tag:' helm/poke-manifests/values.yaml"
 
@@ -90,7 +90,7 @@ pipeline {
                                     git commit -m "Update image tag to $IMAGE_TAG"
                                     git push https://$GIT_USERNAME:$GIT_PASSWORD@$GH_PUSH_URL_HELM $BRANCH_HELM
                                 else
-                                    echo 'No se detectaron cambios en values.yaml, saltando push.'
+                                    echo 'Not found changes in values.yaml, skipping push.'
                                 fi                                                                 
                             '''   
                                 }   
@@ -101,4 +101,4 @@ pipeline {
             }
         
     }
-}                         
+}                        

@@ -78,14 +78,21 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' helm/poke-manifests/values.yaml"
-                            
-                            sh """                                
+                            sh "echo 'Updating tag: ${IMAGE_TAG}'"
+                            sh "sed -i \"s/\\(tag: \\).*/\\1${IMAGE_TAG}/g\" helm/poke-manifests/values.yaml"
+                            sh "grep 'tag:' helm/poke-manifests/values.yaml"
+
+                            sh '''                                
                                 git config user.email "jenkins@ordersgh17.com"
                                 git config user.name "Jenkins CI"
                                 git add helm/poke-manifests/values.yaml                                
-                                git diff --quiet || (git commit -m "Update image tag to ${IMAGE_TAG}" && git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GH_PUSH_URL_HELM} ${BRANCH_HELM})                                                                 
-                            """   
+                                if ! git diff --staged --quiet; then
+                                    git commit -m "Update image tag to $IMAGE_TAG"
+                                    git push https://$GIT_USERNAME:$GIT_PASSWORD@$GH_PUSH_URL_HELM $BRANCH_HELM
+                                else
+                                    echo 'Not found changes in values.yaml, skipping push.'
+                                fi                                                                 
+                            '''   
                                 }   
                             }
                         }
@@ -94,4 +101,4 @@ pipeline {
             }
         
     }
-}                         
+}                     
