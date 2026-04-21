@@ -78,8 +78,14 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh "IMAGE_TAG=${IMAGE_TAG} yq -i '.tag = env(IMAGE_TAG)' helm/poke-manifests/values.yaml"
-
+                            sh """
+                            if ! command -v yq &> /dev/null; then
+                                curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o ./yq
+                                chmod +x ./yq
+                            fi
+                            
+                            IMAGE_TAG=${IMAGE_TAG} yq -i '.tag = env(IMAGE_TAG)' helm/poke-manifests/values.yaml"
+                            """
                             sh """                                
                                 git config user.email "jenkins@ordersgh17.com"
                                 git config user.name "Jenkins CI"
@@ -94,4 +100,4 @@ pipeline {
             }
         
     }
-}               
+}                         
