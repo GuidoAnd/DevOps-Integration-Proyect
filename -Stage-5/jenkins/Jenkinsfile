@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     environment {
-            AWS_REGION = 'us-east-1'
-            IMAGE_TAG = "${BUILD_NUMBER}"
+            AWS_REGION = 'us-east-1'             
             AWS_ACCOUNT_ID = '025889067332'
             REPO_GH = 'https://github.com/GuidoAnd/DevOps-Integration-Proyect.git'           
             BRANCH_TARGET_NAME = 'main'
-            ECR_URL = '025889067332.dkr.ecr.us-east-1.amazonaws.com/devops-pi/reginf'
+            ECR_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/devops-pi/reginf"
             FULL_IMAGE = "${ECR_URL}:${IMAGE_TAG}"
             HELM_REPO = 'https://github.com/GuidoAnd/DevOps-Integration-Proyect-helm.git'
             GH_PUSH_URL_HELM = 'github.com/GuidoAnd/DevOps-Integration-Proyect-helm.git'
@@ -25,6 +24,11 @@ pipeline {
             steps {
                 git branch: "${BRANCH_TARGET_NAME}",
                     url: "${REPO_GH}"
+                script {
+                    env.GIT_COMMIT_SHORT = sh(script: 'git rev-parse HEAD', 
+                    returnStdout: true).trim()
+                    env.IMAGE_TAG = env.GIT_COMMIT_SHORT
+                }
             }
         }
 
@@ -42,7 +46,7 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                sh "docker build . -t ${FULL_IMAGE} -t ${ECR_URL}:latest"
+                sh "docker build . -t ${FULL_IMAGE}"
               }
             }
                        
@@ -53,7 +57,9 @@ pipeline {
                  //   withCredentials([usernamePassword(credentialsId: 'Jenkins-ECR-pi', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh """
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                        docker push ${FULL_IMAGE}
+                        docker tag ${FULL_IMAGE} ${ECR_URL}:${IMAGE_TAG}
+                        docker tag ${FULL_IMAGE} ${ECR_URL}:latest
+                        docker push ${ECR_URL}:${IMAGE_TAG}
                         docker push ${ECR_URL}:latest
                         """
                }         
@@ -61,7 +67,7 @@ pipeline {
         }
         stage('Update Helm Values') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-app-test',
+                withCredentials([usernamePassword(credentialsId: 'github-j-app',
                                  passwordVariable: 'GIT_PASSWORD',
                                  usernameVariable: 'GIT_USERNAME')]) {
                     script {
@@ -72,16 +78,13 @@ pipeline {
                         """
                                            
                         dir('helm-repo') {
-                            sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/' values.yaml"
+                            sh "yq -i '".tag = \"${IMAGE_TAG}\"' helm/poke-manifests/values.yaml"
 
-                            sh """
+                            sh """                                
                                 git config user.email "jenkins@ordersgh17.com"
                                 git config user.name "Jenkins CI"
-                                git add values.yaml
-                                git commit -m "Update image tag to ${IMAGE_TAG}"
-
-                                # Usamos las variables que jenkins genera automaticamente para la app
-                                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GH_PUSH_URL_HELM} ${BRANCH_HELM}
+                                git add helm/poke-manifests/values.yaml                                
+                                git diff --quiet || (git commit -m "Update image tag to ${IMAGE_TAG}" && git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GH_PUSH_URL_HELM} ${BRANCH_HELM})                                                                 
                             """   
                                 }   
                             }
