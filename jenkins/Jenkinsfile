@@ -82,17 +82,17 @@ pipeline {
                             sh "sed -i \"s/\\(tag: \\).*/\\1${IMAGE_TAG}/g\" helm/poke-manifests/values.yaml"
                             sh "grep 'tag:' helm/poke-manifests/values.yaml"
 
-                            sh """                                
+                            sh '''                                
                                 git config user.email "jenkins@ordersgh17.com"
                                 git config user.name "Jenkins CI"
                                 git add helm/poke-manifests/values.yaml                                
-                                if ! git diff --quiet; then
-                                    git commit -m "Update image tag to ${IMAGE_TAG}"
-                                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${GH_PUSH_URL_HELM} ${BRANCH_HELM}
+                                if ! git diff --staged --quiet; then
+                                    git commit -m "Update image tag to $IMAGE_TAG"
+                                    git push https://$GIT_USERNAME:$GIT_PASSWORD@$GH_PUSH_URL_HELM $BRANCH_HELM
                                 else
                                     echo 'No se detectaron cambios en values.yaml, saltando push.'
                                 fi                                                                 
-                            """   
+                            '''   
                                 }   
                             }
                         }
