@@ -16,8 +16,6 @@
 
 * #### 4° Stage - Apply a solution for the scale problem
 
-* #### 5° Stage - Automatizate && Continuos Deployment
+* #### 5° Stage - Automatizatse && Continuos Deployment
 
 #
-
-##### Update: The Integration proyect will be building on April month.
